@@ -1,0 +1,28 @@
+---
+import '../styles/global.scss';
+// Component Imports
+import BaseLayout from "../layout/BaseLayout.astro"
+import FlexBox from "../components/FlexBox/FlexBox.jsx"
+import BookItem from "../components/BookItem/BookItem.jsx"
+
+
+const response = await fetch('http://127.0.0.1:1337/api/books?populate=*');
+const { data } = await response.json();
+
+console.log(data.attributes);
+---
+
+<BaseLayout>
+	<FlexBox>
+		{
+			data.map((book) => (
+				<BookItem 
+					image={`http://127.0.0.1:1337${book.attributes.cover.data.attributes.formats.medium.url}`}
+					name={book.attributes.name}
+					author={book.attributes.author}
+					description={book.attributes.description} 
+				/>
+			))
+		}
+	</FlexBox>
+</BaseLayout>
